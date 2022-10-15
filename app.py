@@ -5,16 +5,18 @@ import os
 from flask import Flask, request, jsonify
 from firebase_admin import credentials, db, initialize_app
 
+from APIServer import APIServer
+
 # Initialize Flask app
 app = Flask(__name__)
-
+_apiServer = APIServer()
 # Initialize Firestore DB
-cred = credentials.Certificate('HackHarvard.json')
-default_app = initialize_app(cred, {
-    'databaseURL': 'https://hackharvard-ba0b8.firebaseio.com/'
-})
-company_ref = db.reference('/companies')
-investor_ref = db.reference('/investors')
+#cred = credentials.Certificate('HackHarvardAUTH.json')
+#default_app = initialize_app(cred, {
+   # 'databaseURL': 'https://hackharvard-ba0b8.firebaseio.com/'
+#})
+#company_ref = db.reference('/companies')
+#investor_ref = db.reference('/investors')
 
 # @app.route('/add', methods=['POST'])
 # def create():
@@ -31,8 +33,17 @@ investor_ref = db.reference('/investors')
 #         return f"An Error Occurred: {e}"
 
 # Currently, in use
+@app.route('/getCompany', methods=['GET'])
+def readOne():
+    companyKey = request.args.get('name')
+
+    dataOne = _apiServer.getCompany(companyKey)
+    return dataOne
+
 @app.route('/list', methods=['GET'])
 def read():
+    data = _apiServer.getCompanies()
+    return data
     """
         read() : Fetches documents from Firestore collection as JSON.
         todo : Return document that matches query ID.
@@ -52,7 +63,20 @@ def read():
 
 
 @app.route('/invest', methods=['POST', 'PUT'])
-def invest():
+def invest(json):
+    #need json or specific data to update values
+    confirmation = json["confirmation"]
+    numSharesBought = json["sharesBought"]
+    dollarAmount = json["dollarAmount"]
+    hashInvestor = json["investorKey"]
+    companyKey = json["companyKey"]
+
+    #_apiServer = APIServer()
+
+    updateResponse = _apiServer.updateInvestorInfo(confirmation, numSharesBought, dollarAmount, hashInvestor, companyKey)
+    if (updateResponse == 200):
+        return 200
+
     """
         invest() : Invest in the company.
         Does the following things:
