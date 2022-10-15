@@ -2,7 +2,7 @@
 
 class Investor:
 
-    ## Investor Level --> can deepend on the amountInvestment,income and other factors
+    ## Investor Level --> can depend on the amountInvestment,income and other factors
     ## TODO: Feature
     def __init__(self, name, email, amtInvestment, walletHash, companyList, investorLevel):
         self.__init__(self, name, email, amtInvestment ,walletHash, companyList)
@@ -13,10 +13,9 @@ class Investor:
         self.name = name
         self.email = email
         self.amtInvestment = amtInvestment
-        self.investorHash = hash(name,email)
+        self.investorHash = hash(email)
         self.walletHash = walletHash
         self.companyList = companyList
-        self.investorLevel = investorLevel
 
 
     ## Differentiating investors basis unique emailId
