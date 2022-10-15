@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "hackharvard-ba0b8",
+  "private_key_id": "e4c672dba4124792fa66534154e50fac391b18bf",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDMoWP1LoBqQ1yW\nJnEMnrRhKPRGiYTSeiGqCsf5nybjuPBjIVl3YNDoNAMgdUwsCK0L6A8a2xKWI+fZ\nWvfxjMFiClmFPhil1nquZ/8acEd/SrTC9DI57IXkMH/p+VfZbESr4fLJpYwbk4fd\nfTpYARZJW3IKI6DU3vESFfhW6NFkXEq9+IalTWkRKeXRyp4/J447qt9Jo0gJZIF3\nhmP41PVI6w32+5W/dz2WyVlsnDF0KDFbLQlbinFwW3ln83ai6Tosh9lvYdwUeerg\n9OSUSJiDl+PEyTkXlM+dfHYtycXXwE3mYLbNypdnTOI0hqJjuaKxpiCDmINodK/z\nd4OwI1fHAgMBAAECggEAPw36MapnGpdwN7pXuoZK2eeXQgcNHRhSOEYDMfmnL6Ok\nuz8jBOSZ6vtf/Uf3tVflDtaulN1toEMnJbRg05dGXbIHvMWSLcPl4Mkd9CUl+uTn\nx20c7vlhlpuVRuE0/0Pb80T4Hce74SF4S7lTWZvYJLmfbd1lqUKbcTHA6PLr1usG\nP+9H6Wl/3aRx53ZieUpTa9+8qytGEKOrppMwzxm51sDmOIIxrUhePvkw6cByZCyu\nZBmae11p/7+TePKI44r2wkTYkHfvGpfLJdGJnnyM2d3HDbHBBEQLmaugq0u85Ued\nC4HSR8sN4qr7IVi2GqQ+m51//x766akHdgS1iwyztQKBgQDxnlR827iRrbvfe3qy\nPYWKqFnTPPPHqnGga9+NE0wRtt3YisrdW0eJHURG7CMaVnuc01ihoq+vpUazrEu+\n80xSzL9z7kvnjFnX0dqWh9jS5F7mUrijUEq+rBC7NjN33mUHjWjR1YaoOmC3uj+u\nrULZC1EoP+7b231K7rreLDMOFQKBgQDYz3QsQmKk9WeT+01oCH5WyGx3XZHxVZCj\nHduE3kOhZfcdDYPr7CmgSf0/vuuY56ufTV7/qmeFYVzZc4zE1kw7T2JWnidLyQZp\n6YBSUgEZlLfkLmR+9csHNGBZQyXcEtFPWLKOMjm1T02ww6opHyM51ylIzecSoQ2q\ngv0QALzhawKBgCD7TeklTRKFtqmQ/3SpNTtyM6DEJzrQJ2aQkxl80ttwLORMPdjt\nhtxOpG1R+pCz0Xfc2bJmtLizRO1tzYEpUPfUfyXiF3ZqEDGHseDudkiDZ/jkvdN9\nOFbCwh3sDiaEsyHOycoq7ZC1N1KdF+hOOlvKUa++2mokkfvSjquZOPbpAoGBAMSN\n3o45aOCPsmVQEG7eNFtMvDjC1YpqvgODD/422i06GXt3Qz/hDCPKsBLYbRJkBQ0Y\nwaUawVsEV36z6MySUu36G/bWzl1AU9Y04CbBPUoJr2ToQidvga54Z1jFLU+Ep8k9\najLLidG7oX09Bcjd97t6Om1Mbc5Pv+nzcqTNZm8dAoGAYe6Q9cd6Rbhe/BKcWJUB\niwGCP0NbOBbvX/DlIJdqpfwxVgNSU4qWaGttXc1EgrwncvaHWAYsynpmuItjdHSQ\nEeJO7V5HxwN4XsoRHZQoVtcArpfZAlp3oYOi7qJSdPF7GtI3y1T4h+CZkwmyXMpE\nEGDoplSGZxjOwyOYCj3fGgM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-kuyhq@hackharvard-ba0b8.iam.gserviceaccount.com",
+  "client_id": "103101388216943634971",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-kuyhq%40hackharvard-ba0b8.iam.gserviceaccount.com"
+}

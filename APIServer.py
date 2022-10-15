@@ -3,14 +3,85 @@ import pandas as pd
 import sys
 import os
 
+import json
+
+from jsonmerge import merge
+
+#firebase
+import firebase_admin
+from firebase_admin import credentials, firestore
+from firebase_admin import db
+from google.cloud import storage
+
+from firebase import firebase
+
+storage_client = storage.Client()
+
+
+#firebaseConfig = credentials.Certificate('./HackHarvardAUTH.json')
+
+#default_app = firebase_admin.initialize_app(firebaseConfig)
+
+#db = firestore.client()
+
+#fb = firebase.FirebaseApplication('https://hackharvard-ba0b8-default-rtdb.firebaseio.com/', None)
+
+#cred = credentials.Certificate('HackHarvardAUTH.json')
+#cred = credentials.ApplicationDefault()
+#ef = db.reference('/')
 from Company import Company
+
+
+#Old way
+cred_path = os.path.join(os.getcwd(), "HackHarvardAUTH.json")
+cred = credentials.Certificate(cred_path)
+#cred = credentials.ApplicationDefault()
+app = firebase_admin.initialize_app(cred, {'databaseURL': 'https://hackharvard-ba0b8.firebaseio.com/'})
+
+#ref = db.reference('/')
+#print(ref.get())
+#print("Trial")
+
+firebase_app = firebase.FirebaseApplication('https://hackharvard-ba0b8.firebaseio.com/', None)
+
+ref = db.reference('/')
+print(ref.get())
 
 #add all relevant firebase characteristics before
 
-def putToDatabase(jsonRes):
 
-    key = str(jsonRes["stock_name"]) + "Final"
-    postAttempt = firebase_app.put('/stocksMinervaMVP', str(key), jsonRes)
+def postToDatabaseOW(json):
+    print("JSON:")
+    print(json)
+    ref = db.reference("/Companies")
+    ref.push()
+    ref.push().set(json)
+
+    #db.collection('App').document('Companies').set(json)
+
+def postToDatabase(jsonRes):
+    print(firebase_app)
+    postAttempt = firebase_app.post('/companies', jsonRes)
+    print("")
+    print("Post: ")
+    print(postAttempt)
+    print("")
+    return postAttempt
+
+def putToDatabase(jsonRes, key):
+
+    #key = str(jsonRes["stock_name"]) + "Final"
+    puttAttempt = firebase_app.put('/companies', str(key), jsonRes)
+    print("")
+    print(puttAttempt)
+    print("")
+
+def getData():
+    data = firebase_app.get('/companies/', '')
+    print("")
+    print("Data Retrieved: ")
+    print("")
+    return data
 
 
 class APIServer:
@@ -84,7 +155,7 @@ class APIServer:
             #update with put object (using company hash as key)
 
             companyUpdated = Company(company.name, company.valuation, company.percentEquity,
-                company.totalSharesInitially, updatedSharesOutstanding, updatedSharesBought
+                company.totalSharesInitially, updatedSharesOutstanding, updatedSharesBought,
                 company.totalAmountRaising, updatedAmountRaised, amountRemainingToRaise,
                 updatedInvestors, company.landingPage, company.progressReport, company.additionalInfo
                 )
@@ -96,7 +167,7 @@ class APIServer:
 
 
         #If confirmation code is anything else
-        else if (confirmationCode == 0):
+        elif (confirmationCode == 0):
             #Or return any other error message to client
             return "Unsuccessful NFT purchase. No update made to company data. "
 
@@ -105,4 +176,20 @@ class APIServer:
         #TODO: retrieve company Object from firebase
         return None
 
+if __name__ == "__main__":
+
+    _apiServer = APIServer()
+    _company = Company("Minerva", 5000000, 10, 10, 10, 0, 500000, 0, 500000, ["Kyle Berg"], "https://minerva-landing-6410d.web.app/", None, None)
+    print("here")
+    companyJSON = _company.getJSON()
+    print(companyJSON)
+    res = postToDatabaseOW(companyJSON)
+    #res = putToDatabase(companyJSON, "MinervaHash")
+
+    #retrieve data
+    data = getData()
+    print("Data Retrieved")
+    print(data)
+    #print(res)
+    #print("Success?")
 
