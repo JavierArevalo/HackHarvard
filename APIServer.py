@@ -8,9 +8,6 @@ from google.cloud import storage
 
 from firebase import firebase
 
-storage_client = storage.Client()
-
-
 #firebaseConfig = credentials.Certificate('./HackHarvardAUTH.json')
 
 #default_app = firebase_admin.initialize_app(firebaseConfig)
