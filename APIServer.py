@@ -5,6 +5,8 @@ import os
 
 import json
 
+from jsonmerge import merge
+
 #firebase
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -117,13 +119,16 @@ class APIServer:
         data = getCompany(companyKey)
         return data
 
+    def getInvestor(self, investorKey):
+        data = getInvestor(investorKey)
+        return data
+
     def updateInvestorInfo(self, confirmationCode, numSharesBought, dollarAmount, investorKey, companyKey):
-        print("Here")
+
         if (confirmationCode == 1):
-            print("Confirmation")
 
             #Step 1: retrieve user from firebase using key
-            investor = getInvestor(investorKey)
+            investor = self.getInvestor(investorKey)
 
             #Investor portfolio:
             #companiesinvested = {'Company A key': 'X shares worth Y', 'Company B key': 'X2 shares worth Y2'}
@@ -144,6 +149,7 @@ class APIServer:
             #update share holdings of each company
             #companyHoldings: {Company A: X shares, Company B: Y shares}
             companyHoldings = investor.companyHoldings
+
             key = str(companyKey)
             currentCompanyHoldings = 0
             if key in companyHoldings:
@@ -250,7 +256,7 @@ class APIServer:
 if __name__ == "__main__":
 
     _apiServer = APIServer()
-    _companyMinerva = Company("Minerva", 6000000, 10, 100, 100, 0, 600000, 0, 500000, ["Kyle Berg, Chris Klaus"], "https://minerva-landing-6410d.web.app/", None, None)
+    _companyMinerva = Company("Minerva", 5000000, 10, 100, 100, 0, 500000, 0, 500000, ["Kyle Berg, Chris Klaus"], "https://minerva-landing-6410d.web.app/", None, None)
     #print("here")
     companyJSONMinerva = _companyMinerva.getJSON()
     resMinerva = putToDatabaseCompany(companyJSONMinerva, "minervaHash")
@@ -290,6 +296,23 @@ if __name__ == "__main__":
     print("Data of all companies")
     print(dataCompanies)
     print("")
+
+    print("Investor")
+    investor = {
+        "key": "Javi",
+        "sharesOwn": 0,
+        "dollarsInvested": 0,
+        "companyHoldings": {
+            "no companies so far": 0,
+        }
+    }
+
+    putToDatabaseInvestor(investor, "Javi")
+
+    dataInvestor = _apiServer.getInvestor("Javi")
+    print("Data Investor")
+    print(dataInvestor)
+
     #print(res)
     #print("Success?")
 
