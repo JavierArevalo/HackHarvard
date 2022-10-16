@@ -1,15 +1,8 @@
-
-import pandas as pd
-import sys
 import os
-
-import json
-
-from jsonmerge import merge
 
 #firebase
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials
 from firebase_admin import db
 from google.cloud import storage
 
@@ -130,6 +123,8 @@ class APIServer:
             #Step 1: retrieve user from firebase using key
             investor = self.getInvestor(investorKey)
 
+            print(investor)
+
             #Investor portfolio:
             #companiesinvested = {'Company A key': 'X shares worth Y', 'Company B key': 'X2 shares worth Y2'}
             #currentDollarPortfolio = investor.dollarPortfolio
@@ -139,16 +134,16 @@ class APIServer:
             #currentDollarPortfolio[str(companyKey)] = (str(numSharesBought) + " shares bought worth " + str(dollarAmount) + " dollars.")
 
             #Update total number of shares he owns in our platform
-            currentNumberSharesOwned = investor.sharesOwn
+            currentNumberSharesOwned = investor['sharesOwn']
             updatedSharesOwn = currentNumberSharesOwned + numSharesBought
 
             #Update total dollar amount invested in our platform
-            dollarsInvestedSoFar = investor.dollarsInvested
+            dollarsInvestedSoFar = investor['dollarsInvested']
             updatedDollarsInvested = dollarsInvestedSoFar + dollarAmount
 
             #update share holdings of each company
             #companyHoldings: {Company A: X shares, Company B: Y shares}
-            companyHoldings = investor.companyHoldings
+            companyHoldings = investor['companyHoldings']
 
             key = str(companyKey)
             currentCompanyHoldings = 0
@@ -157,8 +152,8 @@ class APIServer:
             companyHoldings[key] = numSharesBought + currentCompanyHoldings
 
             #Create new investor object
-            investorUpdated = Investor(investorKey, updatedSharesOwn, dollarsInvestedSoFar, companyHoldings)
-            putToDatabaseInvestor(investorUpdated)
+            # investorUpdated = Investor(investorKey, updatedSharesOwn, dollarsInvestedSoFar, companyHoldings)
+            # putToDatabaseInvestor(investorUpdated)
 
         return None
 
@@ -176,22 +171,24 @@ class APIServer:
             #Step 1: retrieve company from firebase using hash
             company = getCompany(companyKey)
 
-            initialTotalSharesOutstanding = company.initialSharesOutstanding
+            print(company)
+
+            initialTotalSharesOutstanding = company['totalSharesInitially']
 
             #Update shares outstanding
-            currentSharesOutstanding = company.sharesOutstanding
+            currentSharesOutstanding = company['sharesOutstanding']
             updatedSharesOutstanding = currentSharesOutstanding - numSharesBought
 
             #Update total number of shares bough so far
-            currentSharesBought = company.sharesBought
+            currentSharesBought = company['sharesBought']
             updatedSharesBought = currentSharesBought + numSharesBought
 
             #update amount raised
-            currentAmountRaised = company.amountRaised
+            currentAmountRaised = company['amountRaised']
             updatedAmountRaised = currentAmountRaised + dollarAmount
 
             #Add current investor
-            listCurrentInvestors = company.investors #should return a list
+            listCurrentInvestors = company['investors'].strip('][').split(', ') #should return a list
             objectInvestor = {
                 "investorHash": str(hashInvestor),
                 "numShares": float(numSharesBought),
@@ -200,7 +197,7 @@ class APIServer:
             updatedInvestors = listCurrentInvestors.append(objectInvestor)
 
             #Amount remaining to raise
-            totalAmountRaising = company.totalAmountRaising
+            totalAmountRaising = company['totalAmountRaising']
             amountRemainingToRaise = totalAmountRaising - updatedAmountRaised
 
             #Create new object: not as efficient as updating but works better due to pointers and memory concerns
@@ -226,19 +223,15 @@ class APIServer:
 
             #update with put object (using company hash as key)
 
-            companyUpdated = Company(company.name, company.valuation, company.percentEquity,
-                company.totalSharesInitially, updatedSharesOutstanding, updatedSharesBought,
-                company.totalAmountRaising, updatedAmountRaised, amountRemainingToRaise,
-                updatedInvestors, company.landingPage, company.progressReport, company.additionalInfo
-                )
+            companyUpdated = Company(company['name'], company['valuation'], company['percentEquity'],
+                company['totalSharesInitially'], updatedSharesOutstanding, updatedSharesBought,
+                company['totalAmountRaising'], updatedAmountRaised, amountRemainingToRaise,
+                updatedInvestors, company['landingPage'], None, None
+                ).getJSON()
 
-            putToDatabaseCompany(companyUpdated)
+            putToDatabaseCompany(companyUpdated, companyKey)
 
             return 200
-
-
-
-
 
         #If confirmation code is anything else
         elif (confirmationCode == 0):

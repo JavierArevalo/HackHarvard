@@ -3,13 +3,17 @@
 # Required imports
 import os
 from flask import Flask, request, jsonify
-from firebase_admin import credentials, db, initialize_app
 
 from APIServer import APIServer
 
 # Initialize Flask app
 app = Flask(__name__)
 _apiServer = APIServer()
+
+from flask_cors import CORS
+
+CORS(app)
+
 # Initialize Firestore DB
 #cred = credentials.Certificate('HackHarvardAUTH.json')
 #default_app = initialize_app(cred, {
@@ -75,7 +79,8 @@ def invest():
 
     print(confirmation, numSharesBought, dollarAmount, hashInvestor, companyKey)
 
-    updateResponse = _apiServer.updateInvestorInfo(int(confirmation), numSharesBought, dollarAmount, hashInvestor, companyKey)
+    updateResponse = _apiServer.updateCompanyInfo(int(confirmation), int(numSharesBought),
+                                                   int(dollarAmount), hashInvestor, companyKey)
     print(updateResponse)
     if (updateResponse == 200):
         return "Success"
