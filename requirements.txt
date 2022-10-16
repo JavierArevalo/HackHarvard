@@ -1,0 +1,8 @@
+flask
+firebase-admin
+pandas
+firebase
+python_jwt
+gcloud
+sseclient
+requests_toolbelt

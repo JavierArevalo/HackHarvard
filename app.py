@@ -62,36 +62,40 @@ def read():
         return f"An Error Occurred: {e}"
 
 
-@app.route('/invest', methods=['POST', 'PUT'])
-def invest(json):
+@app.route('/invest', methods=['GET'])
+def invest():
     #need json or specific data to update values
-    confirmation = json["confirmation"]
-    numSharesBought = json["sharesBought"]
-    dollarAmount = json["dollarAmount"]
-    hashInvestor = json["investorKey"]
-    companyKey = json["companyKey"]
+    confirmation = request.args.get("confirmation")
+    numSharesBought = request.args.get("sharesBought")
+    dollarAmount = request.args.get("dollarAmount")
+    hashInvestor = request.args.get("investorKey")
+    companyKey = request.args.get("companyKey")
 
     #_apiServer = APIServer()
 
-    updateResponse = _apiServer.updateInvestorInfo(confirmation, numSharesBought, dollarAmount, hashInvestor, companyKey)
-    if (updateResponse == 200):
-        return 200
+    print(confirmation, numSharesBought, dollarAmount, hashInvestor, companyKey)
 
-    """
-        invest() : Invest in the company.
-        Does the following things:
-        1: Reduce the number of NFTs available from companies
-        2: Add the company to the investor's portfolio
-        3: Returns success if all the above operations are successful.
-        Ensure you pass a custom ID as part of json body in post request,
-        e.g. json={'id': '1', 'title': 'Write a blog post today'}
-    """
-    try:
-        id = request.json['id']
-        company_ref.document(id).update(request.json)
-        return jsonify({"success": True}), 200
-    except Exception as e:
-        return f"An Error Occurred: {e}"
+    updateResponse = _apiServer.updateInvestorInfo(int(confirmation), numSharesBought, dollarAmount, hashInvestor, companyKey)
+    print(updateResponse)
+    if (updateResponse == 200):
+        return "Success"
+    return "Failure"
+
+    # """
+    #     invest() : Invest in the company.
+    #     Does the following things:
+    #     1: Reduce the number of NFTs available from companies
+    #     2: Add the company to the investor's portfolio
+    #     3: Returns success if all the above operations are successful.
+    #     Ensure you pass a custom ID as part of json body in post request,
+    #     e.g. json={'id': '1', 'title': 'Write a blog post today'}
+    # """
+    # try:
+    #     id = request.json['id']
+    #     company_ref.document(id).update(request.json)
+    #     return jsonify({"success": True}), 200
+    # except Exception as e:
+    #     return f"An Error Occurred: {e}"
 
 
 port = int(os.environ.get('PORT', 8080))

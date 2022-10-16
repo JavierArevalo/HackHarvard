@@ -5,8 +5,6 @@ import os
 
 import json
 
-from jsonmerge import merge
-
 #firebase
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -120,8 +118,9 @@ class APIServer:
         return data
 
     def updateInvestorInfo(self, confirmationCode, numSharesBought, dollarAmount, investorKey, companyKey):
-
+        print("Here")
         if (confirmationCode == 1):
+            print("Confirmation")
 
             #Step 1: retrieve user from firebase using key
             investor = getInvestor(investorKey)
